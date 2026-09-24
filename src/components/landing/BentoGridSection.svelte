@@ -134,7 +134,7 @@
             Fully compliant with the Anthropic Model Context Protocol. Works out-of-the-box with Claude Desktop, Cline, Roo Code, LibreChat, and custom enterprise agentic frameworks.
           </p>
         </div>
-        <div class="grid grid-cols-3 gap-3 mt-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
           <div class="bg-[var(--page-card-subtle)] p-3 border-2 border-[var(--page-border)] rounded text-center font-mono text-xs font-bold text-[var(--page-text)]">
             Tool Calling
           </div>
@@ -205,3 +205,4 @@
 
   </div>
 </section>
+

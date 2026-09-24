@@ -333,10 +333,10 @@
     </div>
 
     <!-- Horizontal track for 3D Menu -> Journey -> Blueprint -->
-    <div bind:this={horizontalWrapper} class="absolute top-0 left-0 w-[400%] h-full flex flex-row z-10">
+    <div bind:this={horizontalWrapper} class="absolute top-0 left-0 w-[600vw] md:w-[400vw] h-full flex flex-row z-10">
       
       <!-- Panel 1: 3D Monitor -->
-      <div class="w-1/4 h-full shrink-0 relative z-20 bg-[#0A0A0A]">
+      <div class="w-[100vw] h-full shrink-0 relative z-20 bg-[#0A0A0A]">
         
         <!-- The Path Line in the Dark Terminal (Panel 1) -->
         {#if pathLineY > 0}
@@ -355,7 +355,7 @@
       </div>
 
       <!-- Panel 2: The Feature Journey (Double Width) -->
-      <div class="panel-2-trigger w-2/4 h-full shrink-0 flex items-center justify-center relative dotted-bg-pattern">
+      <div class="panel-2-trigger w-[400vw] md:w-[200vw] h-full shrink-0 flex items-center justify-center relative dotted-bg-pattern">
         
         <!-- Standby Title Badge (Aligned exactly with Node 03) -->
         <div class="absolute top-12 sm:top-16 left-[41.6%] -translate-x-1/2 flex flex-col items-center pointer-events-none whitespace-nowrap z-50">
@@ -411,7 +411,7 @@
       </div>
 
       <!-- Panel 3: Blueprint -->
-      <div class="panel-3-blueprint w-1/4 h-full shrink-0 flex items-center justify-center relative dotted-bg-pattern fade-dots">
+      <div class="panel-3-blueprint w-[100vw] h-full shrink-0 flex items-center justify-center relative dotted-bg-pattern fade-dots">
         <HowItWorksSection />
       </div>
 
@@ -471,6 +471,7 @@
     -webkit-mask-image: linear-gradient(to right, black 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.2) 100%);
   }
 </style>
+
 
 
 
