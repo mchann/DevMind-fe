@@ -1,208 +1,196 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { onMount } from "svelte";
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-  let gridEl: HTMLElement;
+  const items = [
+    {
+      num: "01",
+      tag: "PRIMARY IDE",
+      title: "VS CODE & CURSOR",
+      desc: "Injects contextual error resolution directly into Cursor composer windows and VS Code Copilot chats. Watches terminal output automatically for stack traces.",
+      code: '// In cursor settings.json\n"mcpServers": {\n  "devmind": { "command": "devmind-mcp" }\n}',
+      bg: "bg-[var(--bento-teal-bg)]",
+      text: "text-[var(--bento-teal-text)]",
+    },
+    {
+      num: "02",
+      tag: "HEADLESS CLI",
+      title: "TERMINAL DAEMON",
+      desc: "Run `devmind capture` right in your bash or zsh session. Intercepts non-zero process exits.",
+      code: "$ devmind log --last-error\n> Indexed commit 4b29f0 as fix",
+      bg: "bg-[var(--bento-yellow-bg)]",
+      text: "text-[var(--bento-yellow-text)]",
+    },
+    {
+      num: "03",
+      tag: "OPEN PROTOCOL",
+      title: "MCP SERVER",
+      desc: "Fully compliant with the Anthropic Model Context Protocol. Works out-of-the-box with Claude Desktop, Cline, Roo Code, LibreChat, and custom enterprise agentic frameworks.",
+      code: "Capabilities:\n- Tool Calling\n- Context Prompts\n- Dynamic Resources",
+      bg: "bg-[var(--bento-pink-bg)]",
+      text: "text-[var(--bento-pink-text)]",
+    },
+    {
+      num: "04",
+      tag: "COLLABORATION",
+      title: "SLACK BOT",
+      desc: "Paste a traceback in #dev-ops. DevMind responds in the thread with who fixed it previously, the link to the PR, and the diff.",
+      code: "@devmind explain C-1049",
+      bg: "bg-white",
+      text: "text-[#0A0A0A]",
+    },
+    {
+      num: "05",
+      tag: "CI/CD WORKFLOWS",
+      title: "GITHUB ACTIONS",
+      desc: "Flags regression bugs on pull requests before merge. Warns when code re-introduces an anti-pattern that caused an outage in past releases.",
+      code: "uses: devmind/action-verify@v1",
+      bg: "bg-[var(--bento-coral-bg)]",
+      text: "text-[var(--bento-coral-text)]",
+    },
+  ];
 
   onMount(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ScrollTrigger.batch for punch-scale entrance
-    ScrollTrigger.batch('.bento-item', {
-      start: 'top 85%',
-      once: true,
-      onEnter: (elements) => {
-        gsap.fromTo(elements,
-          {
-            scale: prefersReducedMotion ? 1 : 0.6,
-            rotation: prefersReducedMotion ? 0 : -6,
-            opacity: 0,
-          },
-          {
-            scale: 1,
-            rotation: 0,
-            opacity: 1,
-            duration: prefersReducedMotion ? 0.3 : 0.8,
-            ease: 'back.out(2.2)',
-            stagger: 0.12,
-          }
-        );
+    const panels = gsap.utils.toArray(".integration-panel");
+    const container = document.querySelector("#stack-container");
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      // Set all to static position for reduced motion
+      gsap.set(panels, { position: "relative", yPercent: 0 });
+      return;
+    }
+
+    // Set initial position: panel 0 is at 0, others are at 100% (hidden below)
+    panels.forEach((panel: any, i) => {
+      if (i > 0) {
+        gsap.set(panel, { yPercent: 100 });
+      }
+    });
+
+    // Create a scrub timeline to slide panels up one by one
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container,
+        start: "top 80px", // Start pinning below the 80px navbar
+        pin: true,
+        scrub: 1,
+        snap: {
+          snapTo: 1 / (panels.length - 1),
+          duration: 0.5,
+          ease: "power2.inOut",
+        },
+        end: () => "+=" + window.innerHeight * panels.length,
       },
     });
 
-    // Hover effect
-    if (!prefersReducedMotion) {
-      document.querySelectorAll('.bento-item').forEach((item) => {
-        item.addEventListener('mouseenter', () => {
-          gsap.to(item, {
-            rotation: 1.5,
-            y: -5,
-            duration: 0.22,
-            ease: 'power1.out',
-            boxShadow: '9px 9px 0 0 var(--page-shadow)',
-            overwrite: 'auto',
-          });
-        });
-        item.addEventListener('mouseleave', () => {
-          gsap.to(item, {
-            rotation: 0,
-            y: 0,
-            duration: 0.65,
-            ease: 'elastic.out(1, 0.4)',
-            boxShadow: '6px 6px 0 0 var(--page-shadow)',
-            overwrite: 'auto',
-          });
-        });
+    panels.forEach((panel: any, i) => {
+      if (i === 0) return;
+
+      tl.to(panel, {
+        yPercent: 0,
+        ease: "none",
       });
-    }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
   });
 </script>
 
-<section id="stack" class="py-20 lg:py-28 relative">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
-    <div class="max-w-2xl mb-14">
-      <h2 class="font-heading font-extrabold text-4xl sm:text-5xl text-[var(--page-text)]">
-        Ecosystem Integrations
-      </h2>
-      <p class="font-mono text-sm text-[var(--page-text-muted)] mt-3 font-medium">
-        DevMind bridges your IDE, continuous integration pipelines, terminal tools, and AI clients through zero-configuration connectors.
-      </p>
-    </div>
+<!-- The pinned container needs a fixed height so absolute children fill it perfectly -->
+<section
+  id="stack"
+  class="relative w-full border-t-[3px] border-[var(--page-border)] bg-[var(--page-bg)]"
+>
+  <div
+    class="py-24 md:py-32 flex flex-col items-center justify-center text-center px-4"
+  >
+    <h2
+      class="font-heading font-black text-5xl md:text-7xl lg:text-[7rem] text-[var(--page-text)] uppercase tracking-tighter leading-[0.9] slide-up-text mb-6"
+    >
+      Ecosystem<br />Integrations
+    </h2>
+    <p
+      class="font-mono text-sm md:text-lg text-[var(--page-text-muted)] font-medium max-w-2xl slide-up-text"
+    >
+      DevMind bridges your IDE, continuous integration pipelines, terminal
+      tools, and AI clients through zero-configuration connectors.
+    </p>
+  </div>
 
-    <!-- Asymmetric Bento Grid -->
-    <div bind:this={gridEl} class="grid grid-cols-1 md:grid-cols-12 gap-6">
-      
-      <!-- Cell 1: Cursor & VS Code (7 cols) -->
-      <div class="bento-item md:col-span-7 border-[3px] border-[var(--page-border)] rounded-lg shadow-[6px_6px_0_0_var(--page-shadow)] p-8 bg-[var(--bento-teal-bg)] text-[var(--bento-teal-text)] flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-6">
-            <span class="px-3 py-1 bg-[var(--page-card-subtle)] border border-[var(--page-border)] rounded font-mono text-xs font-bold text-[var(--page-text)]">
-              PRIMARY IDE EXTENSION
-            </span>
-            <span class="font-mono text-xs font-bold text-[var(--page-text-muted)]">v2.4.0</span>
-          </div>
-          <h3 class="font-heading font-extrabold text-3xl mb-3">
-            VS Code & Cursor Native Sidecar
-          </h3>
-          <p class="font-mono text-sm opacity-85 leading-relaxed max-w-lg mb-6">
-            Injects contextual error resolution directly into Cursor composer windows and VS Code Copilot chats. Watches terminal output automatically for stack traces.
-          </p>
+  <div
+    id="stack-container"
+    class="relative w-full h-[calc(100dvh-80px)] overflow-hidden border-t-[3px] border-[var(--page-border)]"
+  >
+    {#each items as item, i}
+      <!-- Each panel is stacked using absolute positioning and z-index -->
+      <!-- The border-t creates the separation line when a new panel slides up over the previous one -->
+      <div
+        class="integration-panel absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center p-6 md:p-16 {item.bg} {item.text} {i >
+        0
+          ? 'border-t-[3px] border-[var(--page-border)] shadow-[0_-15px_30px_rgba(0,0,0,0.1)]'
+          : ''}"
+        style="z-index: {i + 10};"
+      >
+        <!-- Background decorative text (optional huge number behind) -->
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[30vw] font-black opacity-5 select-none pointer-events-none"
+        >
+          {item.num}
         </div>
-        <div class="bg-[var(--page-card-subtle)] p-4 border-2 border-[var(--page-border)] rounded-lg font-mono text-xs shadow-[3px_3px_0_0_var(--page-shadow)] text-[var(--page-text)]">
-          <span class="opacity-60">// In cursor settings.json</span><br />
-          <span class="text-indigo-400">"mcpServers"</span>: &#123; <span class="text-amber-400">"devmind"</span>: &#123; <span class="text-indigo-400">"command"</span>: <span class="text-emerald-400">"devmind-mcp"</span> &#125; &#125;
-        </div>
-      </div>
 
-      <!-- Cell 2: Terminal CLI (5 cols) -->
-      <div class="bento-item md:col-span-5 border-[3px] border-[var(--page-border)] rounded-lg shadow-[6px_6px_0_0_var(--page-shadow)] p-8 bg-[var(--bento-yellow-bg)] text-[var(--bento-yellow-text)] flex flex-col justify-between">
-        <div>
-          <span class="px-3 py-1 bg-[var(--page-card-subtle)] border border-[var(--page-border)] rounded font-mono text-xs font-bold inline-block mb-6 text-[var(--page-text)]">
-            HEADLESS CLI
-          </span>
-          <h3 class="font-heading font-extrabold text-2xl mb-2">
-            Terminal Memory Daemon
-          </h3>
-          <p class="font-mono text-xs opacity-85 leading-relaxed mb-4">
-            Run <code class="font-bold bg-[var(--page-card-subtle)] px-1.5 py-0.5 rounded border border-[var(--page-border)]">devmind capture</code> right in your bash or zsh session. Intercepts non-zero process exits.
-          </p>
-        </div>
-        <div class="bg-[var(--page-card-subtle)] text-[var(--accent-teal)] p-3 rounded border-2 border-[var(--page-border)] font-mono text-[11px]">
-          $ devmind log --last-error<br />
-          <span class="text-[var(--page-text)]">&gt; Indexed commit 4b29f0 as fix</span>
-        </div>
-      </div>
-
-      <!-- Cell 3: MCP Server Native (8 cols) -->
-      <div class="bento-item md:col-span-8 border-[3px] border-[var(--page-border)] rounded-lg shadow-[6px_6px_0_0_var(--page-shadow)] p-8 bg-[var(--bento-pink-bg)] text-[var(--bento-pink-text)] flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-3 py-1 bg-[var(--page-card-subtle)] border border-[var(--page-border)] rounded font-mono text-xs font-bold text-[var(--page-text)]">
-              OPEN PROTOCOL
-            </span>
-            <span class="font-mono text-xs font-bold bg-[var(--page-card-subtle)] text-[var(--page-text-muted)] border border-[var(--page-border)] px-2 py-0.5 rounded">
-              Anthropic MCP Spec
-            </span>
+        <!-- Top Left Number & Tag -->
+        <div
+          class="absolute top-6 left-6 md:top-8 md:left-8 z-20 flex flex-col items-start"
+        >
+          <div
+            class="font-heading font-extrabold text-4xl md:text-6xl tracking-tighter opacity-90 leading-none"
+          >
+            {item.num}
           </div>
-          <h3 class="font-heading font-extrabold text-3xl mb-3">
-            Model Context Protocol (MCP) Standard Server
-          </h3>
-          <p class="font-mono text-sm opacity-85 leading-relaxed max-w-xl">
-            Fully compliant with the Anthropic Model Context Protocol. Works out-of-the-box with Claude Desktop, Cline, Roo Code, LibreChat, and custom enterprise agentic frameworks.
-          </p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
-          <div class="bg-[var(--page-card-subtle)] p-3 border-2 border-[var(--page-border)] rounded text-center font-mono text-xs font-bold text-[var(--page-text)]">
-            Tool Calling
-          </div>
-          <div class="bg-[var(--page-card-subtle)] p-3 border-2 border-[var(--page-border)] rounded text-center font-mono text-xs font-bold text-[var(--page-text)]">
-            Context Prompts
-          </div>
-          <div class="bg-[var(--page-card-subtle)] p-3 border-2 border-[var(--page-border)] rounded text-center font-mono text-xs font-bold text-[var(--page-text)]">
-            Dynamic Resources
+          <div
+            class="font-mono text-xs md:text-sm font-bold tracking-widest uppercase mt-2 opacity-80 bg-black/5 px-2 py-1 rounded"
+          >
+            {item.tag}
           </div>
         </div>
-      </div>
 
-      <!-- Cell 4: Slack Bot (4 cols) -->
-      <div class="bento-item md:col-span-4 border-[3px] border-[var(--page-border)] rounded-lg shadow-[6px_6px_0_0_var(--page-shadow)] p-8 bg-[var(--page-card)] flex flex-col justify-between">
-        <div>
-          <span class="px-3 py-1 bg-[var(--accent-yellow)] text-[var(--accent-yellow-text)] border border-[var(--page-border)] rounded font-mono text-xs font-bold inline-block mb-4">
-            COLLABORATION
-          </span>
-          <h3 class="font-heading font-bold text-2xl text-[var(--page-text)] mb-2">
-            Slack / Incident Bot
+        <!-- Center Massive Typography -->
+        <div
+          class="w-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center relative z-20 mt-12 md:mt-0"
+        >
+          <h3
+            class="font-heading font-black text-5xl sm:text-6xl md:text-7xl lg:text-[6rem] leading-[0.9] tracking-tighter uppercase"
+            style="text-shadow: 4px 4px 0px rgba(0,0,0,0.1);"
+          >
+            {item.title}
           </h3>
-          <p class="font-mono text-xs text-[var(--page-text-muted)] leading-relaxed">
-            Paste a traceback in #dev-ops. DevMind responds in the thread with who fixed it previously, the link to the PR, and the diff.
+
+          <p
+            class="font-mono text-sm md:text-base lg:text-lg max-w-2xl mt-6 md:mt-8 opacity-95 font-medium leading-relaxed bg-white/10 p-4 md:p-6 backdrop-blur-sm border-[3px] border-current shadow-[6px_6px_0_0_currentColor] rounded-xl text-left"
+          >
+            {item.desc}
           </p>
-        </div>
-        <div class="mt-4 p-2 bg-[var(--page-card-subtle)] border-2 border-[var(--page-border)] rounded font-mono text-[11px] text-[var(--page-text)] font-semibold">
-          @devmind explain C-1049
+
+          <!-- Code block -->
+          <div
+            class="mt-6 md:mt-8 p-4 md:p-6 border-[3px] border-[var(--page-border)] bg-[var(--page-card-subtle)] text-[var(--page-text)] shadow-[6px_6px_0_0_var(--page-shadow)] rounded-xl text-left w-full max-w-2xl"
+          >
+            <pre
+              class="font-mono text-xs md:text-base whitespace-pre-wrap font-bold overflow-x-auto"><code
+                >{item.code}</code
+              ></pre>
+          </div>
         </div>
       </div>
-
-      <!-- Cell 5: GitHub Actions (6 cols) -->
-      <div class="bento-item md:col-span-6 border-[3px] border-[var(--page-border)] rounded-lg shadow-[6px_6px_0_0_var(--page-shadow)] p-8 bg-[var(--page-card)] flex flex-col justify-between">
-        <div>
-          <span class="px-3 py-1 bg-[var(--accent-teal)] text-[var(--accent-teal-text)] border border-[var(--page-border)] rounded font-mono text-xs font-bold inline-block mb-4">
-            CI / CD WORKFLOWS
-          </span>
-          <h3 class="font-heading font-bold text-2xl text-[var(--page-text)] mb-2">
-            GitHub Actions & PR Reviewer
-          </h3>
-          <p class="font-mono text-xs text-[var(--page-text-muted)] leading-relaxed">
-            Flags regression bugs on pull requests before merge. Warns when code re-introduces an anti-pattern that caused an outage in past releases.
-          </p>
-        </div>
-        <div class="mt-4 p-3 bg-[var(--page-card-subtle)] text-[var(--page-text)] border-2 border-[var(--page-border)] rounded font-mono text-[11px]">
-          uses: devmind/action-verify@v1
-        </div>
-      </div>
-
-      <!-- Cell 6: REST API & Webhooks (6 cols) -->
-      <div class="bento-item md:col-span-6 border-[3px] border-[var(--page-border)] rounded-lg shadow-[6px_6px_0_0_var(--page-shadow)] p-8 bg-[var(--bento-coral-bg)] text-[var(--bento-coral-text)] flex flex-col justify-between">
-        <div>
-          <span class="px-3 py-1 bg-[var(--page-card-subtle)] text-[var(--page-text)] border border-[var(--page-border)] rounded font-mono text-xs font-bold inline-block mb-4">
-            DEVELOPER API
-          </span>
-          <h3 class="font-heading font-bold text-2xl mb-2">
-            REST Endpoints & Webhooks
-          </h3>
-          <p class="font-mono text-xs opacity-85 leading-relaxed">
-            Export and ingest memory graphs programmatically. Stream real-time bug telemetry into your internal developer portal or Datadog dashboard.
-          </p>
-        </div>
-        <div class="mt-4 p-3 bg-[var(--page-card-subtle)] text-[var(--accent-yellow)] border-2 border-[var(--page-border)] rounded font-mono text-[11px]">
-          POST /v1/memories/query &#123; hash, context &#125;
-        </div>
-      </div>
-
-    </div>
-
+    {/each}
   </div>
 </section>
-

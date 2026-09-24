@@ -1,26 +1,12 @@
 <script lang="ts">
-  import MarqueeTicker from './MarqueeTicker.svelte';
-
-  const footerTickerItems = [
-    'DEVMIND // THE MODEL CONTEXT PROTOCOL BUG SOLVER',
-    'ZERO TRIBAL KNOWLEDGE LOSS',
-    'WORKS WITH CLAUDE, CURSOR, ROO-CODE & VS-CODE',
-    'PERSISTENT ERROR RESOLUTION GRAPH',
-    'MCP COMPLIANT // SERVER SPEC v1.2',
-    'LOCAL SQLITE OR SHARED POSTGRES',
-  ];
+  import PixelText from './PixelText.svelte';
 </script>
 
 <footer class="bg-[#0A0A0A] text-[#F6F2E9] border-t-[3px] border-[var(--page-border)] pt-8 pb-12">
   
-  <!-- Running Footer Marquee -->
+  <!-- Large Pixel Text -->
   <div class="mb-12">
-    <MarqueeTicker
-      items={footerTickerItems}
-      bgClass="bg-[var(--accent-yellow)]"
-      textClass="text-[var(--accent-yellow-text)]"
-      duration={26}
-    />
+    <PixelText text="DEVMIND" />
   </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-xs text-gray-400">
