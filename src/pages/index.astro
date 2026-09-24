@@ -1,17 +1,137 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
+import Loader from '../components/landing/Loader.svelte';
+import SmoothScroll from '../components/landing/SmoothScroll.svelte';
+import LandingNav from '../components/landing/LandingNav.svelte';
+import HeroSection from '../components/landing/HeroSection.svelte';
+import ProblemSection from '../components/landing/ProblemSection.svelte';
+import BlueprintGatewaySection from '../components/landing/BlueprintGatewaySection.svelte';
+import HowItWorksSection from '../components/landing/HowItWorksSection.svelte';
+import BentoGridSection from '../components/landing/BentoGridSection.svelte';
+import CtaSection from '../components/landing/CtaSection.svelte';
+import LandingFooter from '../components/landing/LandingFooter.svelte';
+import PixelCompanion from '../components/landing/PixelCompanion.svelte';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="DevMind — AI Developer Memory & Error-Solving via MCP" hideNav={true} hideFooter={true}>
+  <!-- Chrome Dino Pixel Runner Loader -->
+  <Loader client:only="svelte" />
+
+  <!-- GSAP ScrollTrigger + Lenis Inertia Smooth Scroll -->
+  <SmoothScroll client:only="svelte" />
+
+  <div class="landing-page min-h-screen">
+    <LandingNav client:only="svelte" />
+    <!-- Interactive Pixel Scroll Companion ("Tuing-Tuing") -->
+    <PixelCompanion client:only="svelte" />
+    <HeroSection client:only="svelte" />
+    <ProblemSection client:only="svelte" />
+    <BlueprintGatewaySection client:only="svelte" />
+    <BentoGridSection client:only="svelte" />
+    <CtaSection client:only="svelte" />
+    <LandingFooter client:only="svelte" />
+  </div>
+</Layout>
+
+<style>
+  .landing-page {
+    /* ── Light Mode (Neo-Brutalist Warm Cream) ── */
+    --page-bg:           #F6F2E9;
+    --page-text:         #0A0A0A;
+    --page-text-muted:   rgba(10, 10, 10, 0.72);
+    --page-border:       #0A0A0A;
+    --page-shadow:       #0A0A0A;
+    --page-card:         #FFFFFF;
+    --page-card-subtle:  #F0EBE0;
+    --page-section-alt:  #FFFFFF;
+    --page-dot:          rgba(10, 10, 10, 0.85);
+
+    /* Accents Light */
+    --accent-yellow:      #FFD23F;
+    --accent-yellow-text: #0A0A0A;
+    --accent-teal:        #2DD4BF;
+    --accent-teal-text:   #0A0A0A;
+    --accent-pink:        #F472B6;
+    --accent-pink-text:   #0A0A0A;
+    --accent-coral:       #FF5C38;
+    --accent-coral-text:  #FFFFFF;
+
+    /* Bento Cards Light */
+    --bento-teal-bg:      #2DD4BF;
+    --bento-teal-text:    #0A0A0A;
+    --bento-yellow-bg:    #FFD23F;
+    --bento-yellow-text:  #0A0A0A;
+    --bento-pink-bg:      #F472B6;
+    --bento-pink-text:    #0A0A0A;
+    --bento-coral-bg:     #FF5C38;
+    --bento-coral-text:   #FFFFFF;
+
+    /* CTA Banner Light */
+    --cta-bg:             #FF5C38;
+    --cta-text:           #FFFFFF;
+    --cta-badge-bg:       #FFFFFF;
+    --cta-badge-text:     #0A0A0A;
+    --cta-btn-bg:         #FFD23F;
+    --cta-btn-text:       #0A0A0A;
+
+    background-color: var(--page-bg);
+    color: var(--page-text);
+    background-image: radial-gradient(var(--page-dot) 1.2px, transparent 1.2px);
+    background-size: 26px 26px;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  :global([data-theme='neoDark']) .landing-page,
+  :global(.dark) .landing-page {
+    /* ── Dark Mode (Calm, Matte DOP / Matches global.css: #121316, #1A1D24, #2E323D) ── */
+    --page-bg:           #121316;
+    --page-text:         #E2E8F0;
+    --page-text-muted:   #94A3B8;
+    --page-border:       #2E323D; /* Graphite gray border - zero white borders */
+    --page-shadow:       #000000; /* Deep black offset shadow */
+    --page-card:         #1A1D24; /* Calm matte card slate */
+    --page-card-subtle:  #222631;
+    --page-section-alt:  #16181F;
+    --page-dot:          rgba(255, 255, 255, 0.05);
+
+    /* Accents Dark (Matte / DOP / Kalem) */
+    --accent-yellow:      #C9972E;
+    --accent-yellow-text: #F8FAFC;
+    --accent-teal:        #167C74;
+    --accent-teal-text:   #F8FAFC;
+    --accent-pink:        #8C385B;
+    --accent-pink-text:   #F8FAFC;
+    --accent-coral:       #A33928;
+    --accent-coral-text:  #F8FAFC;
+
+    /* Bento Cards Dark */
+    --bento-teal-bg:      #132826;
+    --bento-teal-text:    #E2E8F0;
+    --bento-yellow-bg:    #232015;
+    --bento-yellow-text:  #E2E8F0;
+    --bento-pink-bg:      #261722;
+    --bento-pink-text:    #E2E8F0;
+    --bento-coral-bg:     #281716;
+    --bento-coral-text:   #E2E8F0;
+
+    /* CTA Banner Dark */
+    --cta-bg:             #1C1E26;
+    --cta-text:           #E2E8F0;
+    --cta-badge-bg:       #262B37;
+    --cta-badge-text:     #E2E8F0;
+    --cta-btn-bg:         #C9972E;
+    --cta-btn-text:       #0F172A;
+  }
+
+  /* ── Hide system scrollbar for a clean brutalist feel ── */
+  :global(html::-webkit-scrollbar),
+  :global(body::-webkit-scrollbar) {
+    display: none !important;
+  }
+  :global(html),
+  :global(body) {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+  }
+</style>
+

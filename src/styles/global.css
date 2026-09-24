@@ -1,0 +1,277 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Layout variables */
+  --bg-main: #F0EFE9;
+  --bg-card-main: #FFFFFF;
+  --text-main: #000000;
+  --border-color: #000000;
+  --shadow-color: #000000;
+
+  /* Card specific variables */
+  --bg-card-issues: #7FE2D3;   /* Mint/Tosca Pastel */
+  --bg-card-prs: #ECA3C8;      /* Soft Pink Pastel */
+  --bg-card-errors: #FF5A4E;   /* Coral Red Pastel */
+  --bg-card-resolved: #18C48C; /* Green Pastel */
+  --text-card: #000000;
+
+  /* Legacy aliases (to be phased out) */
+  --neo-border: var(--border-color);
+  
+  /* Spacing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+}
+
+[data-theme='neoDark'], .dark {
+  /* Layout variables */
+  --bg-main: #121316;
+  --bg-card-main: #1A1D24;
+  --text-main: #FFFFFF;
+  --border-color: #2E323D;
+  --shadow-color: rgba(255, 255, 255, 0.12);
+
+  /* Card specific variables */
+  --bg-card-issues: #0EA89E;   /* Total Issues / Issues */
+  --bg-card-prs: #C45579;      /* Pull Requests / PRs */
+  --bg-card-errors: #FF604D;   /* Active Errors / Errors */
+  --bg-card-resolved: #0EBA82; /* Resolved */
+  --text-card: #FFFFFF;
+  
+  /* Legacy aliases */
+  --neo-border: var(--border-color);
+}
+
+@layer components {
+  .neo-card {
+    @apply rounded-lg border-2 bg-card-main p-6 transition-all duration-150;
+    border-color: var(--neo-border);
+    box-shadow: 4px 4px 0px 0px var(--neo-border);
+  }
+
+  .neo-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px var(--neo-border);
+  }
+
+  .neo-btn {
+    @apply rounded-sm border-2 bg-card-main px-6 py-3 font-bold text-content transition-all duration-150;
+    border-color: var(--neo-border);
+    box-shadow: 4px 4px 0px 0px var(--neo-border);
+  }
+
+  .neo-btn:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px var(--neo-border);
+  }
+
+  .neo-btn:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px var(--neo-border);
+  }
+
+  .neo-btn-primary {
+    @apply rounded-sm border-2 bg-primary px-6 py-3 font-bold text-white transition-all duration-150;
+    border-color: var(--neo-border);
+    box-shadow: 4px 4px 0px 0px var(--neo-border);
+  }
+
+  .neo-btn-primary:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px var(--neo-border);
+  }
+
+  .neo-btn-primary:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px var(--neo-border);
+  }
+
+  .neo-input {
+    @apply rounded-sm border-2 bg-card-main px-4 py-3 font-body transition-all text-content;
+    border-color: var(--neo-border);
+    box-shadow: 4px 4px 0px 0px var(--neo-border);
+  }
+
+  .neo-input:focus {
+    @apply outline-none ring-4 ring-primary;
+  }
+
+  .neo-badge {
+    @apply inline-block rounded-sm border-2 px-3 py-1 font-bold text-sm;
+    border-color: var(--neo-border);
+  }
+
+  .neo-badge-primary {
+    @apply inline-block rounded-sm border-2 bg-primary px-3 py-1 font-bold text-white text-sm;
+    border-color: var(--neo-border);
+    box-shadow: 2px 2px 0px 0px var(--neo-border);
+  }
+
+  .neo-badge-accent {
+    @apply inline-block rounded-sm border-2 bg-accent px-3 py-1 font-bold text-sm;
+    border-color: var(--neo-border);
+    box-shadow: 2px 2px 0px 0px var(--neo-border);
+  }
+
+  .neo-badge-info {
+    @apply inline-block rounded-sm border-2 bg-info px-3 py-1 font-bold text-sm;
+    border-color: var(--neo-border);
+    box-shadow: 2px 2px 0px 0px var(--neo-border);
+  }
+
+  .neo-badge-warning {
+    @apply inline-block rounded-sm border-2 bg-warning px-3 py-1 font-bold text-sm;
+    border-color: var(--neo-border);
+    box-shadow: 2px 2px 0px 0px var(--neo-border);
+  }
+
+  .neo-badge-error {
+    @apply inline-block rounded-sm border-2 bg-error px-3 py-1 font-bold text-white text-sm;
+    border-color: var(--neo-border);
+    box-shadow: 2px 2px 0px 0px var(--neo-border);
+  }
+
+  .heading-h1 {
+    @apply font-heading text-4xl font-bold tracking-tight;
+  }
+
+  .heading-h2 {
+    @apply font-heading text-3xl font-bold tracking-tight;
+  }
+
+  .heading-h3 {
+    @apply font-heading text-2xl font-bold tracking-tight;
+  }
+
+  .heading-h4 {
+    @apply font-heading text-xl font-bold tracking-tight;
+  }
+}
+
+.neo-card-dark {
+  @apply rounded-lg border-2 border-[#F0EEE8] bg-transparent p-4 transition-all duration-150;
+  box-shadow: 4px 4px 0px 0px #F0EEE8;
+}
+
+.neo-card-dark:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #F0EEE8;
+}
+
+html {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+}
+
+/* ========================================
+   LANDING PAGE - ISOLATED STYLES
+   ======================================== */
+
+.landing-page {
+  /* Light mode (default) */
+  --landing-bg: #F6F2E9;
+  --landing-text: #000000;
+  --landing-border-color: #000000;
+  --landing-accent-yellow: #facc15;
+  --landing-accent-teal: #2dd4bf;
+  --landing-accent-pink: #f472b6;
+}
+
+.landing-page.dark {
+  /* Dark mode */
+  --landing-bg: #121212;
+  --landing-text: #F6F2E9;
+  --landing-border-color: #F6F2E9;
+  --landing-accent-yellow: #facc15;
+  --landing-accent-teal: #2dd4bf;
+  --landing-accent-pink: #f472b6;
+}
+
+@layer components {
+  /* Brutalist hard shadow utility */
+  .landing-brutalist-shadow {
+    box-shadow: 4px 4px 0px 0px var(--landing-border-color, #000);
+  }
+
+  /* Thick border standard for neo-brutalism */
+  .landing-brutalist-border {
+    border: 2.5px solid var(--landing-border-color, #000);
+  }
+
+  /* Brutalist button with press/active states */
+  .landing-btn-brutalist {
+    @apply font-bold transition-all duration-150;
+    border: 2.5px solid var(--landing-border-color, #000);
+    box-shadow: 4px 4px 0px 0px var(--landing-border-color, #000);
+  }
+
+  .landing-btn-brutalist:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px var(--landing-border-color, #000);
+  }
+
+  .landing-btn-brutalist:active:not(:disabled) {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px 0px var(--landing-border-color, #000);
+  }
+
+  /* Brutalist card component */
+  .landing-card-brutalist {
+    @apply p-6 transition-all duration-150;
+    background-color: var(--landing-bg, #F6F2E9);
+    border: 2.5px solid var(--landing-border-color, #000);
+    box-shadow: 4px 4px 0px 0px var(--landing-border-color, #000);
+  }
+
+  .landing-card-brutalist:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px var(--landing-border-color, #000);
+  }
+
+  /* Accent utilities */
+  .landing-accent-yellow {
+    color: var(--landing-accent-yellow);
+  }
+
+  .landing-accent-teal {
+    color: var(--landing-accent-teal);
+  }
+
+  .landing-accent-pink {
+    color: var(--landing-accent-pink);
+  }
+
+  .landing-bg-accent-yellow {
+    background-color: var(--landing-accent-yellow);
+  }
+
+  .landing-bg-accent-teal {
+    background-color: var(--landing-accent-teal);
+  }
+
+  .landing-bg-accent-pink {
+    background-color: var(--landing-accent-pink);
+  }
+
+  /* Text utilities */
+  .landing-text-primary {
+    color: var(--landing-text);
+  }
+
+  .landing-bg-primary {
+    background-color: var(--landing-bg);
+  }
+}

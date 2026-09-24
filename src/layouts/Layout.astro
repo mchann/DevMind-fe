@@ -1,0 +1,55 @@
+---
+export interface Props {
+  title: string;
+  hideNav?: boolean;
+  hideFooter?: boolean;
+}
+
+const { title, hideNav = false, hideFooter = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="DevMind - AI-powered developer memory. Stop solving the same bug twice." />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script is:inline>
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme || (prefersDark ? 'neoDark' : 'neoLight');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (_) {}
+
+      if (typeof sessionStorage !== 'undefined') {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          if (!params.has('replay') && !params.has('preview') && sessionStorage.getItem('devmind_preloader_seen')) {
+            document.documentElement.dataset.preloader = 'done';
+          }
+        } catch (_) {}
+      }
+    </script>
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen font-body">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    transition: background-color 0.2s, color 0.2s;
+  }
+</style>
